@@ -2,6 +2,7 @@
 
 class Note < ApplicationRecord
   # Associations
+  has_many :items
   has_many_attached :images
 
   # Validates
