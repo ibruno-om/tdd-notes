@@ -2,9 +2,9 @@
 
 FactoryBot.define do
   factory :note do
-    title { 'Some Note' }
-    content { 'Content Note' }
-    color { '#ccffff' }
-    archived { false }
+    title { Faker::Lorem.sentence }
+    content { Faker::Lorem.paragraph }
+    color { Faker::Color.hex_color }
+    archived { [true, false].sample }
   end
 end

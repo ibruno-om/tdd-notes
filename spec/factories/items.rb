@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 FactoryBot.define do
   factory :item do
-    description { "MyString" }
-    note { nil }
+    description { Faker::Lorem.sentence }
+    note
   end
 end
