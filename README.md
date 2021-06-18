@@ -1,23 +1,25 @@
-# README
+## Notes TODO List - Sample Rest API
 
-Basic notes / TODO list API to pratice TDD.
+#### ⭐ Star us on GitHub — it motivates a lot!
 
-Things you may want to cover:
+Basic app for notes / TODO list API to pratice TDD in RoR.
 
-* Ruby version
+## Project Status
 
-* System dependencies
+(This project is currently in development)
 
-* Configuration
+## Installation and Setup Instructions
 
-* Database creation
+### Requirements:  
 
-* Database initialization
+Clone down this repository. You will need `ruby` 2.7.2 installed globally on your machine, and a `Postgres` database server.
 
-* How to run the test suite
+🚀 Running:
 
-* Services (job queues, cache servers, search engines, etc.)
+    $ bundle install
+    $ rails db:setup
+    $ rails s -p 3000
 
-* Deployment instructions
+🔍 Tests:
 
-* ...
+    $ rspec <test_folder>
