@@ -3,14 +3,14 @@
 module Api
   module V1
     class NotesController < ApplicationController
-      before_action :set_paginate, only: [:index]
-      before_action :set_note, only: %I[show destroy]
+      before_action :set_paginate, only: :index
+      before_action :set_note, only: %I[show destroy update]
       # GET api/v1/notes
       def index
         render json: Note.page(@page).per(@per_page).all
       end
 
-      # GET api/v1/note
+      # GET api/v1/notes/:id
       def show
         render json: @note
       end
@@ -21,16 +21,27 @@ module Api
         if @note.save
           render json: @note
         else
-          render json: { error: { RecordInvalid: @note.errors } }, status: 406
+          render json: { message: 'Note not created', errors: @note.errors },
+                 status: 406
         end
       end
 
-      # DELETE api/v1/notes
+      # DELETE api/v1/notes/:id
       def destroy
         if @note.destroy
           render json: { success: 'Note deleted' }, status: 202
         else
-          render json: { error: 'Note not deleted' }, status: 406
+          render json: { message: 'Note not deleted' }, status: 406
+        end
+      end
+
+      # PATCH/PUT api/v1/notes/:id
+      def update
+        if @note.update(note_params)
+          render json: @note
+        else
+          render json: { message: 'Note not updated', errors: @note.errors },
+                 status: 422
         end
       end
 
