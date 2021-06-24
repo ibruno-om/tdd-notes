@@ -28,7 +28,7 @@ RSpec.describe 'Notes Request', type: :request do
   end
 
   describe 'GET #show' do
-    it 'Existent ID from notes' do
+    it 'Existent ID' do
       note = notes.sample
       get api_v1_note_path(note)
 
@@ -37,7 +37,7 @@ RSpec.describe 'Notes Request', type: :request do
       expect(json_response).to eq(note.as_json)
     end
 
-    it 'Not existent ID from notes' do
+    it 'Not existent ID' do
       get api_v1_note_path(0)
       expect(response).to have_http_status(404)
     end
@@ -69,6 +69,11 @@ RSpec.describe 'Notes Request', type: :request do
       delete api_v1_note_path(notes.sample)
 
       expect(response).to have_http_status(202)
+    end
+
+    it 'Not existent ID' do
+      delete api_v1_note_path(0)
+      expect(response).to have_http_status(404)
     end
   end
 
