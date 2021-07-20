@@ -58,7 +58,7 @@ RSpec.describe 'Notes Request', type: :request do
     it 'Invalid record' do
       post api_v1_notes_path, params: { note: invalid_new_note }
 
-      expect(response).to have_http_status(406)
+      expect(response).to have_http_status(:unprocessable_entity)
       expect(json_response).to be_an(Hash)
       expect(json_response).to have_key('errors')
     end

@@ -22,16 +22,16 @@ module Api
           render json: @note
         else
           render json: { message: 'Note not created', errors: @note.errors },
-                 status: 406
+                 status: :unprocessable_entity
         end
       end
 
       # DELETE api/v1/notes/:id
       def destroy
         if @note.destroy
-          render json: { success: 'Note deleted' }, status: 202
+          render json: { success: 'Note deleted' }, status: :accepted
         else
-          render json: { message: 'Note not deleted' }, status: 406
+          render json: { message: 'Note not deleted' }, status: :unprocessable_entity
         end
       end
 
@@ -56,7 +56,7 @@ module Api
       def set_note
         @note = Note.find(params[:id])
       rescue ActiveRecord::RecordNotFound
-        render json: { error: 'Not found' }, status: 404
+        render json: { error: 'Not found' }, status: :not_found
       end
 
       # Set paginate params
