@@ -54,9 +54,7 @@ module Api
 
       # Set note by ID or return not found status
       def set_note
-        @note = Note.find(params[:id])
-      rescue ActiveRecord::RecordNotFound
-        render json: { error: 'Not found' }, status: :not_found
+        @note = Note.find(params[:id])      
       end
 
       # Set paginate params

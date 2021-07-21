@@ -15,8 +15,6 @@ module Api
       # Set note by ID or return not found status
       def set_note
         @note = Note.find(params[:note_id])
-      rescue ActiveRecord::RecordNotFound
-        render json: { error: 'Not found' }, status: :not_found
       end
     end
   end
