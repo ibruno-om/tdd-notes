@@ -13,7 +13,7 @@ RSpec.describe 'Notes Request', type: :request do
     it 'List default pagination' do
       get api_v1_notes_path
 
-      expect(response).to have_http_status(200)
+      expect(response).to have_http_status(:ok)
       expect(json_response).to be_an(Array)
       expect(json_response.size).to eq(10)
     end
@@ -21,7 +21,7 @@ RSpec.describe 'Notes Request', type: :request do
     it 'List paginated notes, page 2 and 5 notes' do
       get api_v1_notes_path, params: { page: 2, size: 5 }
 
-      expect(response).to have_http_status(200)
+      expect(response).to have_http_status(:ok)
       expect(json_response).to be_a(Array)
       expect(json_response.size).to eq(5)
     end
@@ -32,14 +32,14 @@ RSpec.describe 'Notes Request', type: :request do
       note = notes.sample
       get api_v1_note_path(note)
 
-      expect(response).to have_http_status(200)
+      expect(response).to have_http_status(:ok)
       expect(json_response).to be_an(Hash)
       expect(json_response).to eq(note.as_json)
     end
 
     it 'Not existent ID' do
       get api_v1_note_path(0)
-      expect(response).to have_http_status(404)
+      expect(response).to have_http_status(:not_found)
     end
   end
 
@@ -47,7 +47,7 @@ RSpec.describe 'Notes Request', type: :request do
     it 'Create new note' do
       post api_v1_notes_path, params: { note: new_note }
 
-      expect(response).to have_http_status(200)
+      expect(response).to have_http_status(:ok)
       expect(json_response).to be_an(Hash)
       expect(json_response).to have_key('id')
       expect(json_response.symbolize_keys
@@ -68,12 +68,12 @@ RSpec.describe 'Notes Request', type: :request do
     it 'Successfully delete' do
       delete api_v1_note_path(notes.sample)
 
-      expect(response).to have_http_status(202)
+      expect(response).to have_http_status(:accepted)
     end
 
     it 'Not existent ID' do
       delete api_v1_note_path(0)
-      expect(response).to have_http_status(404)
+      expect(response).to have_http_status(:not_found)
     end
   end
 
@@ -95,7 +95,7 @@ RSpec.describe 'Notes Request', type: :request do
 
       put api_v1_note_path(note), params: { note: invalid_udpate_note }
 
-      expect(response).to have_http_status(422)
+      expect(response).to have_http_status(:unprocessable_entity)
       expect(json_response).to be_an(Hash)
       expect(json_response).to have_key('errors')
     end

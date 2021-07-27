@@ -41,7 +41,7 @@ module Api
           render json: @note
         else
           render json: { message: 'Note not updated', errors: @note.errors },
-                 status: 422
+                 status: :unprocessable_entity
         end
       end
 
@@ -54,7 +54,7 @@ module Api
 
       # Set note by ID or return not found status
       def set_note
-        @note = Note.find(params[:id])      
+        @note = Note.find(params[:id])
       end
 
       # Set paginate params

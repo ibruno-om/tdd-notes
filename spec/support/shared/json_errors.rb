@@ -5,7 +5,7 @@ shared_examples_for 'record_not_found_requests' do
     { status: '404', error: 'Record not found' }
   end
 
-  it 'should return 401 status code' do
+  it 'should return 404 status code' do
     subject
     expect(response).to have_http_status(404)
   end
