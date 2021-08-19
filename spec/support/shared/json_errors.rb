@@ -1,9 +1,7 @@
 require 'rails_helper'
 
 shared_examples_for 'record_not_found_requests' do
-  let(:not_found_error) do
-    { status: '404', error: 'Record not found' }
-  end
+  let(:not_found_error) { NOT_FOUND_RESPONSE }
 
   it 'should return 404 status code' do
     subject

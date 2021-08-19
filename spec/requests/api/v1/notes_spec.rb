@@ -14,16 +14,16 @@ RSpec.describe 'Notes Request', type: :request do
       get api_v1_notes_path
 
       expect(response).to have_http_status(:ok)
-      expect(json_response).to be_an(Array)
-      expect(json_response.size).to eq(10)
+      expect(json_response_data).to be_an(Array)
+      expect(json_response_data_ids.size).to eq(10)
     end
 
     it 'List paginated notes, page 2 and 5 notes' do
       get api_v1_notes_path, params: { page: 2, size: 5 }
 
       expect(response).to have_http_status(:ok)
-      expect(json_response).to be_a(Array)
-      expect(json_response.size).to eq(5)
+      expect(json_response_data).to be_a(Array)
+      expect(json_response_data_ids.size).to eq(5)
     end
   end
 
@@ -33,8 +33,8 @@ RSpec.describe 'Notes Request', type: :request do
       get api_v1_note_path(note)
 
       expect(response).to have_http_status(:ok)
-      expect(json_response).to be_an(Hash)
-      expect(json_response).to eq(note.as_json)
+      expect(json_response_data).to be_an(Hash)
+      expect(json_response_data).to eq(serialize_model_as_json(note)[:data])
     end
 
     it 'Not existent ID' do
@@ -48,9 +48,9 @@ RSpec.describe 'Notes Request', type: :request do
       post api_v1_notes_path, params: { note: new_note }
 
       expect(response).to have_http_status(:ok)
-      expect(json_response).to be_an(Hash)
-      expect(json_response).to have_key('id')
-      expect(json_response.symbolize_keys
+      expect(json_response_data).to be_an(Hash)
+      expect(json_response_data).to have_key(:id)
+      expect(json_response_data[:attributes]
         .select { |key, _| new_note.keys.include?(key) })
         .to eq(new_note)
     end
@@ -83,9 +83,9 @@ RSpec.describe 'Notes Request', type: :request do
 
       put api_v1_note_path(note), params: { note: udpate_note }
 
-      expect(response).to have_http_status(200)
-      expect(json_response).to be_an(Hash)
-      expect(json_response.symbolize_keys
+      expect(response).to have_http_status(:ok)
+      expect(json_response_data).to be_an(Hash)
+      expect(json_response_data[:attributes]
         .select { |key, _| udpate_note.keys.include?(key) })
         .to eq(udpate_note)
     end
