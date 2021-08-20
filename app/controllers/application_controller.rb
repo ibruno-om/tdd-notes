@@ -9,4 +9,9 @@ class ApplicationController < ActionController::API
   def record_not_found
     render json: NOT_FOUND_RESPONSE, status: :not_found
   end
+
+  # Handle validation resource error
+  def render_json_validation_error(resource)
+    render json: resource, status: :unprocessable_entity, adapter: :json_api, serializer: JsonValidationErrorSerializer
+  end
 end

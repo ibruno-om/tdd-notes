@@ -3,11 +3,12 @@
 module Api
   module V1
     class NotesController < ApplicationController
-      before_action :set_paginate, only: :index
+      include Api::Paginable
+
       before_action :set_note, only: %I[show destroy update]
       # GET api/v1/notes
       def index
-        render json: Note.page(@page).per(@per_page).all
+        render json: Note.all.then(&paginate)
       end
 
       # GET api/v1/notes/:id
@@ -21,8 +22,7 @@ module Api
         if @note.save
           render json: @note
         else
-          render json: { message: 'Note not created', errors: @note.errors },
-                 status: :unprocessable_entity
+          render_json_validation_error(@note)
         end
       end
 
@@ -40,8 +40,7 @@ module Api
         if @note.update(note_params)
           render json: @note
         else
-          render json: { message: 'Note not updated', errors: @note.errors },
-                 status: :unprocessable_entity
+          render_json_validation_error(@note)
         end
       end
 
@@ -55,12 +54,6 @@ module Api
       # Set note by ID or return not found status
       def set_note
         @note = Note.find(params[:id])
-      end
-
-      # Set paginate params
-      def set_paginate
-        @page = params[:page] || 1
-        @per_page = params[:size] || 10
       end
     end
   end

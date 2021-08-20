@@ -7,7 +7,7 @@ RSpec.describe 'Notes Request', type: :request do
   let(:new_note) { attributes_for(:note) }
   let(:udpate_note) { attributes_for(:note) }
   let(:invalid_udpate_note) { attributes_for(:note, { title: nil }) }
-  let(:invalid_new_note) { attributes_for(:note, { title: nil }) }
+  let(:invalid_new_note) { attributes_for(:note, { title: nil, content: nil }) }
 
   describe 'GET #index' do
     it 'List default pagination' do
