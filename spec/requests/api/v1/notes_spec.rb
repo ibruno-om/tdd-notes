@@ -73,6 +73,16 @@ RSpec.describe 'Notes Request', type: :request do
       delete api_v1_note_path(0)
       expect(response).to have_http_status(:not_found)
     end
+
+    context 'Fail to delete' do
+      subject { delete api_v1_note_path(notes.sample) }
+
+      it 'should return unprocessable_entity' do
+        allow_any_instance_of(Note).to receive(:destroy).and_return(false)
+        subject
+        expect(response).to have_http_status(:unprocessable_entity)
+      end
+    end
   end
 
   describe 'PUT/PATCH #update' do
