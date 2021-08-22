@@ -55,12 +55,10 @@ RSpec.describe 'Notes Request', type: :request do
         .to eq(new_note)
     end
 
-    it 'Invalid record' do
-      post api_v1_notes_path, params: { note: invalid_new_note }
+    context 'Invalid record' do
+      subject { post api_v1_notes_path, params: { note: invalid_new_note } }
 
-      expect(response).to have_http_status(:unprocessable_entity)
-      expect(json_response).to be_an(Hash)
-      expect(json_response).to have_key('errors')
+      it_behaves_like 'jsonapi_error_entity_requests'
     end
   end
 
@@ -78,26 +76,23 @@ RSpec.describe 'Notes Request', type: :request do
   end
 
   describe 'PUT/PATCH #update' do
-    it 'Successfully update record' do
-      note = notes.sample
+    context 'Successfully update record' do
+      subject { put api_v1_note_path(notes.sample), params: { note: udpate_note } }
 
-      put api_v1_note_path(note), params: { note: udpate_note }
-
-      expect(response).to have_http_status(:ok)
-      expect(json_response_data).to be_an(Hash)
-      expect(json_response_data[:attributes]
-        .select { |key, _| udpate_note.keys.include?(key) })
-        .to eq(udpate_note)
+      it 'Return properly body response' do
+        subject
+        expect(response).to have_http_status(:ok)
+        expect(json_response_data).to be_an(Hash)
+        expect(json_response_data[:attributes]
+          .select { |key, _| udpate_note.keys.include?(key) })
+          .to eq(udpate_note)
+      end
     end
 
-    it 'Invalid update note' do
-      note = notes.sample
+    context 'Invalid update note' do
+      subject { put api_v1_note_path(notes.sample), params: { note: invalid_udpate_note } }
 
-      put api_v1_note_path(note), params: { note: invalid_udpate_note }
-
-      expect(response).to have_http_status(:unprocessable_entity)
-      expect(json_response).to be_an(Hash)
-      expect(json_response).to have_key('errors')
+      it_behaves_like 'jsonapi_error_entity_requests'
     end
   end
 end
