@@ -43,14 +43,7 @@ Metrics/PerceivedComplexity:
 # Offense count: 5
 # Configuration parameters: AllowedConstants.
 Style/Documentation:
-  Exclude:
-    - 'spec/**/*'
-    - 'test/**/*'
-    - 'app/controllers/api/v1/notes_controller.rb'
-    - 'app/models/application_record.rb'
-    - 'config/application.rb'
-    - 'db/migrate/20210613000044_create_notes.rb'
-    - 'db/migrate/20210617013355_create_items.rb'
+  Enabled: false
 
 # Offense count: 30
 # Cop supports --auto-correct.
@@ -91,3 +84,6 @@ Style/SpecialGlobalVars:
 # URISchemes: http, https
 Layout/LineLength:
   Max: 198
+
+AllCops:
+    NewCops: enable
