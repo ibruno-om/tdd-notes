@@ -48,7 +48,8 @@ module Api
 
       # Permited params for note
       def note_params
-        params.require(:note).permit(:title, :content, :color, :archived)
+        params.require(:data).require(:attributes)
+              .permit(:title, :content, :color, :archived, images: [])
       end
 
       # Set note by ID or return not found status

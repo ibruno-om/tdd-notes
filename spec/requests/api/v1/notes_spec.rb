@@ -4,10 +4,19 @@ require 'rails_helper'
 
 RSpec.describe 'Notes Request', type: :request do
   let!(:notes) { create_list(:note, 15) }
-  let(:new_note) { attributes_for(:note) }
-  let(:udpate_note) { attributes_for(:note) }
-  let(:invalid_udpate_note) { attributes_for(:note, { title: nil }) }
-  let(:invalid_new_note) { attributes_for(:note, { title: nil, content: nil }) }
+
+  let(:new_note) do
+    { data: { attributes: attributes_for(:note) } }
+  end
+  let(:udpate_note) do
+    { data: { attributes: attributes_for(:note) } }
+  end
+  let(:invalid_udpate_note) do
+    { data: { attributes: attributes_for(:note, { title: nil }) } }
+  end
+  let(:invalid_new_note) do
+    { data: { attributes: attributes_for(:note, { title: nil, content: nil }) } }
+  end
 
   describe 'GET #index' do
     it 'List default pagination' do
@@ -45,18 +54,16 @@ RSpec.describe 'Notes Request', type: :request do
 
   describe 'POST #create' do
     it 'Create new note' do
-      post api_v1_notes_path, params: { note: new_note }
+      post api_v1_notes_path, params: new_note
 
       expect(response).to have_http_status(:ok)
       expect(json_response_data).to be_an(Hash)
-      expect(json_response_data).to have_key(:id)
-      expect(json_response_data[:attributes]
-        .select { |key, _| new_note.keys.include?(key) })
-        .to eq(new_note)
+      expect(json_response_data[:id]).not_to be_nil
+      expect(json_response_data[:attributes]).to eq(new_note[:data][:attributes])
     end
 
     context 'Invalid record' do
-      subject { post api_v1_notes_path, params: { note: invalid_new_note } }
+      subject { post api_v1_notes_path, params: invalid_new_note }
 
       it_behaves_like 'jsonapi_error_entity_requests'
     end
@@ -87,20 +94,18 @@ RSpec.describe 'Notes Request', type: :request do
 
   describe 'PUT/PATCH #update' do
     context 'Successfully update record' do
-      subject { put api_v1_note_path(notes.sample), params: { note: udpate_note } }
+      subject { put api_v1_note_path(notes.sample), params: udpate_note }
 
       it 'Return properly body response' do
         subject
         expect(response).to have_http_status(:ok)
         expect(json_response_data).to be_an(Hash)
-        expect(json_response_data[:attributes]
-          .select { |key, _| udpate_note.keys.include?(key) })
-          .to eq(udpate_note)
+        expect(json_response_data[:attributes]).to eq(udpate_note[:data][:attributes])
       end
     end
 
     context 'Invalid update note' do
-      subject { put api_v1_note_path(notes.sample), params: { note: invalid_udpate_note } }
+      subject { put api_v1_note_path(notes.sample), params: invalid_udpate_note }
 
       it_behaves_like 'jsonapi_error_entity_requests'
     end
