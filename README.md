@@ -16,10 +16,15 @@ Clone down this repository. You will need `ruby` 2.7.2 installed globally on you
 
 🚀 Running:
 
-    $ bundle install
-    $ rails db:setup
-    $ rails s -p 3000
+    $ bin/bundle install
+    $ bin/rails db:setup
+    $ bin/rails s -p 3000
+
+📚 Mock Data
+
+    $ bin/rails db:generate_data_faker
 
 🔍 Tests:
 
-    $ rspec <test_folder>
+    $ bin/rspec
+    $ bin/rspec <test_folder>
