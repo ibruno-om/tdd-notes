@@ -4,18 +4,14 @@ require 'rails_helper'
 
 RSpec.describe 'Notes Request', type: :request do
   let!(:notes) { create_list(:note, 15) }
-
-  let(:new_note) do
+  let(:valid_params) do
     { data: { attributes: attributes_for(:note) } }
   end
-  let(:udpate_note) do
-    { data: { attributes: attributes_for(:note) } }
-  end
-  let(:invalid_udpate_note) do
-    { data: { attributes: attributes_for(:note, { title: nil }) } }
-  end
-  let(:invalid_new_note) do
+  let(:invalid_params) do
     { data: { attributes: attributes_for(:note, { title: nil, content: nil }) } }
+  end
+  let(:params_with_images) do
+    { data: { attributes: attributes_for(:note_with_images) } }
   end
 
   describe 'GET #index' do
@@ -54,16 +50,16 @@ RSpec.describe 'Notes Request', type: :request do
 
   describe 'POST #create' do
     it 'Create new note' do
-      post api_v1_notes_path, params: new_note
+      post api_v1_notes_path, params: valid_params
 
       expect(response).to have_http_status(:ok)
       expect(json_response_data).to be_an(Hash)
       expect(json_response_data[:id]).not_to be_nil
-      expect(json_response_data[:attributes]).to eq(new_note[:data][:attributes])
+      expect(json_response_data[:attributes]).to eq(valid_params[:data][:attributes])
     end
 
     context 'Invalid record' do
-      subject { post api_v1_notes_path, params: invalid_new_note }
+      subject { post api_v1_notes_path, params: invalid_params }
 
       it_behaves_like 'jsonapi_error_entity_requests'
     end
@@ -94,18 +90,18 @@ RSpec.describe 'Notes Request', type: :request do
 
   describe 'PUT/PATCH #update' do
     context 'Successfully update record' do
-      subject { put api_v1_note_path(notes.sample), params: udpate_note }
+      subject { put api_v1_note_path(notes.sample), params: valid_params }
 
       it 'Return properly body response' do
         subject
         expect(response).to have_http_status(:ok)
         expect(json_response_data).to be_an(Hash)
-        expect(json_response_data[:attributes]).to eq(udpate_note[:data][:attributes])
+        expect(json_response_data[:attributes]).to eq(valid_params[:data][:attributes])
       end
     end
 
     context 'Invalid update note' do
-      subject { put api_v1_note_path(notes.sample), params: invalid_udpate_note }
+      subject { put api_v1_note_path(notes.sample), params: invalid_params }
 
       it_behaves_like 'jsonapi_error_entity_requests'
     end
