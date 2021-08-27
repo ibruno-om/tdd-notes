@@ -55,7 +55,17 @@ RSpec.describe 'Notes Request', type: :request do
       expect(response).to have_http_status(:ok)
       expect(json_response_data).to be_an(Hash)
       expect(json_response_data[:id]).not_to be_nil
-      expect(json_response_data[:attributes]).to eq(valid_params[:data][:attributes])
+      expect(json_response_data[:attributes].compact).to eq(valid_params[:data][:attributes])
+    end
+
+    it 'Create new note with images' do
+      post api_v1_notes_path, params: params_with_images
+
+      expect(response).to have_http_status(:ok)
+      expect(json_response_data).to be_an(Hash)
+      expect(json_response_data[:id]).not_to be_nil
+      expect(json_response_data[:attributes][:images]).not_to be_nil
+      expect(json_response_data[:attributes][:images].size).to eq(2)
     end
 
     context 'Invalid record' do
@@ -96,7 +106,7 @@ RSpec.describe 'Notes Request', type: :request do
         subject
         expect(response).to have_http_status(:ok)
         expect(json_response_data).to be_an(Hash)
-        expect(json_response_data[:attributes]).to eq(valid_params[:data][:attributes])
+        expect(json_response_data[:attributes].compact).to eq(valid_params[:data][:attributes])
       end
     end
 

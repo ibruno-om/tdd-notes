@@ -18,7 +18,7 @@ FactoryBot.define do
     content { Faker::Lorem.paragraph }
     color { Faker::Color.hex_color }
     archived { [true, false].sample }
-    factory :post_with_images do
+    factory :note_with_images do
       images do
         [
           Rack::Test::UploadedFile.new("#{Rails.root}/spec/support/assets/images/todoist-001.jpg"),
