@@ -1,3 +1,15 @@
+# == Schema Information
+#
+# Table name: notes
+#
+#  id         :bigint           not null, primary key
+#  title      :string
+#  content    :text
+#  color      :string
+#  archived   :boolean
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#
 class NoteSerializer < ActiveModel::Serializer
   attributes :id, :title, :content, :color, :archived, :images
 
