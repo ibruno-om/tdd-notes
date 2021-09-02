@@ -2,13 +2,13 @@
 
 require 'rails_helper'
 
-RSpec.describe AuthenticateUser, type: :service do
+RSpec.describe AuthenticateUserService, type: :service do
   let(:user) { create(:user) }
   let(:key) { Rails.application.secrets.secret_key_base }
 
   describe '.authenticate' do
     context 'valid password' do
-      subject { AuthenticateUser.new(user.email, user.password).authenticate }
+      subject { AuthenticateUserService.new(user.email, user.password).authenticate }
       it 'return valid JWT' do
         expect(subject).not_to be_nil
         expect(payload).to eq({ user_id: user.id, name: user.name })
@@ -16,7 +16,7 @@ RSpec.describe AuthenticateUser, type: :service do
     end
 
     context 'invalid password' do
-      subject { AuthenticateUser.new(user.email, "#{user.password}123foo").authenticate }
+      subject { AuthenticateUserService.new(user.email, "#{user.password}123foo").authenticate }
       it { expect(subject).to be_nil }
     end
   end
