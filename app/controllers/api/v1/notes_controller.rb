@@ -4,6 +4,9 @@ module Api
   module V1
     class NotesController < ApplicationController
       include Api::Paginable
+      include Api::Authenticable
+
+      before_action :authenticate!
 
       before_action :set_note, only: %I[show destroy update]
       # GET api/v1/notes

@@ -22,4 +22,8 @@ module ApiHelper
   def serialize_model_as_json(model, options: {})
     ActiveModelSerializers::SerializableResource.new(model, options).as_json
   end
+
+  def authentication_token(user)
+    "Bearer #{JsonWebToken.encode(user_id: user.id, name: user.name)}"
+  end
 end
