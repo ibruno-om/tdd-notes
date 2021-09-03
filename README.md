@@ -1,6 +1,6 @@
 ## Notes TODO List - Sample Rest API
 
-# Code Coverage ![check-code-coverage](https://img.shields.io/badge/code--coverage-97.14%25-brightgreen)
+# Code Coverage ![check-code-coverage](https://img.shields.io/badge/code--coverage-100%25-brightgreen)
 
 
 #### ⭐ Star us on GitHub — it motivates a lot!
