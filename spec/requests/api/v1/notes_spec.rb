@@ -76,26 +76,27 @@ RSpec.describe 'Notes Request', type: :request do
       before(:each) do
         @headers = { Authorization: authentication_token(user) }
       end
-      it 'Create new note' do
-        post api_v1_notes_path, params: valid_params, headers: @headers
-
-        expect(response).to have_http_status(:ok)
-        expect(json_response_data).to be_an(Hash)
-        expect(json_response_data[:id]).not_to be_nil
-        expect(json_response_data[:attributes].compact).to eq(valid_params[:data][:attributes])
+      context 'note without images' do
+        subject { post api_v1_notes_path, params: valid_params, headers: @headers }
+        it 'Create new note' do
+          expect { subject }.to change { Note.count }.by(1)
+          expect(response).to have_http_status(:created)
+          expect(json_response_data).to be_an(Hash)
+          expect(json_response_data[:id]).not_to be_nil
+          expect(json_response_data[:attributes].compact).to eq(valid_params[:data][:attributes])
+        end
       end
 
-      subject { post api_v1_notes_path, params: valid_params, headers: @headers }
-      it { expect { subject }.to change { Note.count }.by(1) }
+      context 'note with iamges' do
+        it 'Create new note with images' do
+          post api_v1_notes_path, params: params_with_images, headers: @headers
 
-      it 'Create new note with images' do
-        post api_v1_notes_path, params: params_with_images, headers: @headers
-
-        expect(response).to have_http_status(:ok)
-        expect(json_response_data).to be_an(Hash)
-        expect(json_response_data[:id]).not_to be_nil
-        expect(json_response_data[:attributes][:images]).not_to be_nil
-        expect(json_response_data[:attributes][:images].size).to eq(2)
+          expect(response).to have_http_status(:created)
+          expect(json_response_data).to be_an(Hash)
+          expect(json_response_data[:id]).not_to be_nil
+          expect(json_response_data[:attributes][:images]).not_to be_nil
+          expect(json_response_data[:attributes][:images].size).to eq(2)
+        end
       end
     end
 

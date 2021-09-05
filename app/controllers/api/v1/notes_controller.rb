@@ -22,11 +22,8 @@ module Api
       # POST api/v1/notes
       def create
         @note = Note.new(note_params)
-        if @note.save
-          render json: @note
-        else
-          render_json_validation_error(@note)
-        end
+        @note.save!
+        render json: @note, status: :created
       end
 
       # DELETE api/v1/notes/:id
@@ -40,11 +37,8 @@ module Api
 
       # PATCH/PUT api/v1/notes/:id
       def update
-        if @note.update(note_params)
-          render json: @note
-        else
-          render_json_validation_error(@note)
-        end
+        @note.update!(note_params)
+        render json: @note
       end
 
       private

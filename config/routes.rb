@@ -6,6 +6,7 @@ Rails.application.routes.draw do
       resources :notes do
         resources :items, only: %I[index]
       end
+      resources :user_registrations, only: %I[create]
     end
   end
 end
