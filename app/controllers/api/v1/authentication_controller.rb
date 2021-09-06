@@ -4,7 +4,6 @@ module Api
   module V1
     class AuthenticationController < ApplicationController
       def authenticate
-        p standard_authenticate_params.to_h
         token = AuthenticateUserService.new(standard_authenticate_params).authenticate
 
         if token.present?
