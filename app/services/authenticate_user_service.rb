@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class AuthenticateUserService
-  def initialize(email, password)
+  def initialize(email: nil, password: nil)
     @email = email
     @password = password
   end

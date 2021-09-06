@@ -8,7 +8,7 @@ RSpec.describe AuthenticateUserService, type: :service do
 
   describe '.authenticate' do
     context 'valid password' do
-      subject { AuthenticateUserService.new(user.email, user.password).authenticate }
+      subject { AuthenticateUserService.new(email: user.email, password: user.password).authenticate }
       it 'return valid JWT' do
         expect(subject).not_to be_nil
         expect(payload).to eq({ user_id: user.id, name: user.name })
@@ -16,7 +16,7 @@ RSpec.describe AuthenticateUserService, type: :service do
     end
 
     context 'invalid password' do
-      subject { AuthenticateUserService.new(user.email, "#{user.password}123foo").authenticate }
+      subject { AuthenticateUserService.new(email: user.email, password: "#{user.password}123foo").authenticate }
       it { expect(subject).to be_nil }
     end
   end
