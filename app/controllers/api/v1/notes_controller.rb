@@ -11,7 +11,7 @@ module Api
       before_action :set_note, only: %I[show destroy update]
       # GET api/v1/notes
       def index
-        render json: Note.all.then(&paginate)
+        render json: current_user&.notes.then(&paginate)
       end
 
       # GET api/v1/notes/:id
@@ -21,7 +21,7 @@ module Api
 
       # POST api/v1/notes
       def create
-        @note = Note.new(note_params)
+        @note = Note.new(note_params.merge(user: current_user))
         @note.save!
         render json: @note, status: :created
       end
@@ -51,7 +51,7 @@ module Api
 
       # Set note by ID or return not found status
       def set_note
-        @note = Note.find(params[:id])
+        @note = current_user.notes.find(params[:id])
       end
     end
   end

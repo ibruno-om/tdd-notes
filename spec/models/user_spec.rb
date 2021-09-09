@@ -31,6 +31,7 @@ RSpec.describe User, type: :model do
   end
 
   describe 'associations' do
+    it { should have_many(:notes) }
     it { should have_one_attached(:avatar) }
   end
 end

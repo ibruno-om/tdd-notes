@@ -3,8 +3,9 @@
 require 'rails_helper'
 
 RSpec.describe 'Notes Request', type: :request do
-  let!(:notes) { create_list(:note, 15) }
   let(:user) { create(:user) }
+  let(:user_without_notes) { create(:user) }
+  let!(:notes) { create_list(:note, 15, { user: user }) }
   let(:header_invalid_token) { { Authorization: 'Bearer foo123456789' } }
   let(:valid_params) do
     { data: { attributes: attributes_for(:note) } }
@@ -61,6 +62,18 @@ RSpec.describe 'Notes Request', type: :request do
 
       it 'Not existent ID' do
         get api_v1_note_path(0), headers: @headers
+        expect(response).to have_http_status(:not_found)
+      end
+    end
+
+    context 'User without notes' do
+      before(:each) do
+        @headers = { Authorization: authentication_token(user_without_notes) }
+      end
+
+      it 'should return not find for user without notes' do
+        get api_v1_note_path(notes.sample), headers: @headers
+
         expect(response).to have_http_status(:not_found)
       end
     end
@@ -134,6 +147,18 @@ RSpec.describe 'Notes Request', type: :request do
       end
     end
 
+    context 'tries to delete another user notes' do
+      before(:each) do
+        @headers ||= { Authorization: authentication_token(user_without_notes) }
+      end
+
+      it 'should returns not found' do
+        delete api_v1_note_path(notes.sample), headers: @headers
+
+        expect(response).to have_http_status(:not_found)
+      end
+    end
+
     context 'Fail to delete' do
       subject { delete api_v1_note_path(notes.sample), headers: @headers }
 
@@ -168,6 +193,18 @@ RSpec.describe 'Notes Request', type: :request do
       end
 
       it { expect { subject }.to change { Note.count }.by(0) }
+    end
+
+    context 'tries to update another user notes' do
+      before(:each) do
+        @headers ||= { Authorization: authentication_token(user_without_notes) }
+      end
+
+      it 'should returns not found' do
+        put api_v1_note_path(notes.sample), params: valid_params, headers: @headers
+
+        expect(response).to have_http_status(:not_found)
+      end
     end
 
     context 'Invalid update note' do

@@ -13,6 +13,10 @@
 #
 class User < ApplicationRecord
   has_secure_password
+  # Associations
+  has_many :notes
+
+  # Validations
   validates :name, :email, :password_digest, presence: true
   validates :name, length: { minimum: 3, maximum: 125 }
   validates :email, format: { with: URI::MailTo::EMAIL_REGEXP }, length: { minimum: 3 }

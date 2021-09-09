@@ -18,6 +18,7 @@ FactoryBot.define do
     content { Faker::Lorem.paragraph }
     color { Faker::Color.hex_color }
     archived { [true, false].sample }
+    user
     factory :note_with_images do
       images do
         [

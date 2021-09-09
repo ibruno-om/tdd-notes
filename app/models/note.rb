@@ -14,6 +14,7 @@
 #
 class Note < ApplicationRecord
   # Associations
+  belongs_to :user, required: true
   has_many :items
   has_many_attached :images
 
