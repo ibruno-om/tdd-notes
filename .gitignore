@@ -31,7 +31,11 @@
 /storage/*
 !/storage/.keep
 .byebug_history
+esdata/
 
 # Ignore master key for decrypting credentials and more.
 /config/master.key
 coverage
+
+# Env
+.env

@@ -13,6 +13,7 @@
 #  updated_at :datetime         not null
 #
 class Note < ApplicationRecord
+  searchkick
   # Associations
   belongs_to :user, required: true
   has_many :items

@@ -27,6 +27,9 @@ gem 'jwt'
 # Use Active Storage variant
 gem 'image_processing', '~> 1.2'
 
+# Searchkick
+gem 'searchkick'
+
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.4.4', require: false
 
