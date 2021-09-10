@@ -28,11 +28,8 @@ module Api
 
       # DELETE api/v1/notes/:id
       def destroy
-        if @note.destroy
-          render json: { success: 'Note deleted' }, status: :accepted
-        else
-          render json: { message: 'Note not deleted' }, status: :unprocessable_entity
-        end
+        @note.destroy!
+        render json: nil, status: :accepted
       end
 
       # PATCH/PUT api/v1/notes/:id
