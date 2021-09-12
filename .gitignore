@@ -38,4 +38,5 @@ esdata/
 coverage
 
 # Env
-.env
+.env.test
+.env.development
