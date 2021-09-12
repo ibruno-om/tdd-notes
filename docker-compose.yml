@@ -7,9 +7,8 @@ services:
       - "9300:9300"
     environment:
       discovery.type: single-node
-      ES_JAVA_OPTS: "-Xms2g -Xmx2g"
-      xpack.monitoring.enabled: "true"
-      xpack.security.enabled: $ELASTIC_SECURITY 
+      ES_JAVA_OPTS: "-Xms2g -Xmx2g"      
+      xpack.security.enabled: $ELASTIC_SECURITY
       ELASTIC_USERNAME: $ELASTIC_USER
       ELASTIC_PASSWORD: $ELASTIC_PASSWORD
     networks:
@@ -23,9 +22,7 @@ services:
       - "5601:5601"
     environment:
       ELASTICSEARCH_URL: http://elasticsearch:9200
-      ELASTICSEARCH_HOSTS: "http://elasticsearch:9200"
-      XPACK_MONITORING_ENABLED: "true"
-      XPACK_MONITORING_COLLECTION_ENABLED: "true"
+      ELASTICSEARCH_HOSTS: "http://elasticsearch:9200"      
       ELASTICSEARCH_USERNAME: $ELASTIC_USER
       ELASTICSEARCH_PASSWORD: $ELASTIC_PASSWORD
     networks:

@@ -44,6 +44,27 @@ RSpec.describe 'Notes Request', type: :request do
       subject { get api_v1_notes_path, headers: header_invalid_token }
       it_behaves_like 'fordidden_requests'
     end
+
+    context 'with query search' do
+      let!(:note_query) { create(:note, :reindex, title: 'FooTitle', content: 'FooContent Ipsum Contetn', user: user) }
+      before(:each) do
+        @headers = { Authorization: authentication_token(user) }
+      end
+
+      it 'Returns the note that the title matches' do
+        get api_v1_notes_path, params: { query: 'Footitle' }, headers: @headers
+
+        expect(response).to have_http_status(:ok)
+        expect(json_response_data_ids).to contain_exactly(note_query.id)
+      end
+
+      it 'Returns the note that the content matches' do
+        get api_v1_notes_path, params: { query: 'Foocontent' }, headers: @headers
+
+        expect(response).to have_http_status(:ok)
+        expect(json_response_data_ids).to contain_exactly(note_query.id)
+      end
+    end
   end
 
   describe 'GET #show' do

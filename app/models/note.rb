@@ -21,4 +21,12 @@ class Note < ApplicationRecord
 
   # Validates
   validates :title, :content, presence: true
+
+  def search_data
+    {
+      title: title,
+      content: content,
+      user_id: user&.id
+    }
+  end
 end

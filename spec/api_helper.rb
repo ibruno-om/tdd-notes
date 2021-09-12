@@ -16,7 +16,7 @@ module ApiHelper
   # Helper method to parse a data hash from response to arrays of IDs
   # @return [Array]
   def json_response_data_ids
-    json_response_data.map { |item| item[:id] }
+    json_response_data.map { |item| item[:id].to_i }
   end
 
   def serialize_model_as_json(model, options: {})

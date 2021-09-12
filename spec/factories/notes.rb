@@ -27,5 +27,10 @@ FactoryBot.define do
         ]
       end
     end
+    trait :reindex do
+      after(:create) do |note, _evaluator|
+        note.reindex(refresh: true)
+      end
+    end
   end
 end
