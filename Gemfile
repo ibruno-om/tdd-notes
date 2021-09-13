@@ -30,6 +30,8 @@ gem 'image_processing', '~> 1.2'
 # Searchkick
 gem 'searchkick'
 
+# Sidekiq
+gem 'sidekiq', '~> 4.1', '>= 4.1.2'
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.4.4', require: false
 
