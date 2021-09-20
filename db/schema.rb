@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20_210_909_013_641) do
+ActiveRecord::Schema.define(version: 20_210_919_235_954) do
   # These are extensions that must be enabled in order to support this database
   enable_extension 'plpgsql'
 
@@ -61,6 +61,14 @@ ActiveRecord::Schema.define(version: 20_210_909_013_641) do
     t.index ['user_id'], name: 'index_notes_on_user_id'
   end
 
+  create_table 'reminders', force: :cascade do |t|
+    t.bigint 'note_id', null: false
+    t.datetime 'notification_time'
+    t.datetime 'created_at', precision: 6, null: false
+    t.datetime 'updated_at', precision: 6, null: false
+    t.index ['note_id'], name: 'index_reminders_on_note_id'
+  end
+
   create_table 'users', force: :cascade do |t|
     t.string 'name'
     t.string 'email'
@@ -73,4 +81,5 @@ ActiveRecord::Schema.define(version: 20_210_909_013_641) do
   add_foreign_key 'active_storage_variant_records', 'active_storage_blobs', column: 'blob_id'
   add_foreign_key 'items', 'notes'
   add_foreign_key 'notes', 'users'
+  add_foreign_key 'reminders', 'notes'
 end
