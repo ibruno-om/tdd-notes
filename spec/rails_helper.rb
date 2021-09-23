@@ -40,6 +40,8 @@ Shoulda::Matchers.configure do |config|
 end
 
 RSpec.configure do |config|
+  ActiveJob::Base.queue_adapter = :test
+
   # Include Helpers and Urls
   config.include Rails.application.routes.url_helpers
   config.include ApiHelper
