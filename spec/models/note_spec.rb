@@ -17,8 +17,9 @@ require 'rails_helper'
 RSpec.describe Note, type: :model do
   describe 'associations' do
     it { should have_many(:items) }
-    it { should have_one(:reminder).inverse_of(:note) }
     it { should belong_to(:user).required }
+    it { should have_one(:reminder).inverse_of(:note) }
+    it { should have_and_belong_to_many(:labels) }
     it { should have_many_attached(:images) }
   end
 
