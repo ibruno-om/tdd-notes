@@ -16,6 +16,7 @@ class Note < ApplicationRecord
   searchkick
   # Associations
   belongs_to :user, required: true
+  has_one :reminder, inverse_of: :note
   has_many :items
   has_many_attached :images
 
