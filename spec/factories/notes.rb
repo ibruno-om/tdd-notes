@@ -27,6 +27,9 @@ FactoryBot.define do
         ]
       end
     end
+    factory :note_with_reminder do
+      reminder
+    end
     trait :reindex do
       after(:create) do |note, _evaluator|
         note.reindex(refresh: true)
