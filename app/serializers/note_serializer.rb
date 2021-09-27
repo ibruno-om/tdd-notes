@@ -11,6 +11,7 @@
 #  archived   :boolean
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
+#  user_id    :bigint           not null
 #
 class NoteSerializer < ActiveModel::Serializer
   attributes :id, :title, :content, :color, :archived, :images
