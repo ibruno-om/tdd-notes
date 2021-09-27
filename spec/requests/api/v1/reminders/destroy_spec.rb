@@ -14,6 +14,7 @@ RSpec.describe 'Api::V1::Reminders', type: :request do
       note_with_reminder
       expect { subject }.to change { Reminder.count }.by(-1)
       expect(response).to have_http_status(:accepted)
+      expect { Reminder.find(note_with_reminder.reminder.id) }.to raise_exception(ActiveRecord::RecordNotFound)
     end
   end
 end

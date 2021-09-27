@@ -19,7 +19,7 @@ RSpec.describe 'Notes Index request', type: :request do
 
         expect(response).to have_http_status(:ok)
         expect(json_response_data).to be_an(Array)
-        expect(json_response_data_ids.size).to eq(10)
+        expect(json_response_data_ids).to eq(notes.first(10).map(&:id))
       end
 
       it 'List paginated notes; show page 2 with 5 notes.' do
@@ -27,7 +27,7 @@ RSpec.describe 'Notes Index request', type: :request do
 
         expect(response).to have_http_status(:ok)
         expect(json_response_data).to be_a(Array)
-        expect(json_response_data_ids.size).to eq(5)
+        expect(json_response_data_ids).to eq(notes.last(5).map(&:id))
       end
     end
 
