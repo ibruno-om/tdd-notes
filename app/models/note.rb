@@ -19,6 +19,7 @@ class Note < ApplicationRecord
   belongs_to :user, required: true
   has_one :reminder, inverse_of: :note
   has_many :items
+  has_many :sharings
   has_and_belongs_to_many :labels
   has_many_attached :images
 
