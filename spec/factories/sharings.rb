@@ -11,8 +11,8 @@
 #
 FactoryBot.define do
   factory :sharing do
-    note { nil }
-    user { nil }
-    permission { 1 }
+    note
+    user
+    permission { %i[view edit].sample }
   end
 end
