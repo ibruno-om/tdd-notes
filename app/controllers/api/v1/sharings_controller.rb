@@ -12,7 +12,18 @@ module Api
         render json: @note.sharings
       end
 
+      # POST notes/:note_id/sharings/
+      def create
+        render json: @note.sharings.create!(sharing_params), status: :ok
+      end
+
       private
+
+      # Permited params for sharing
+      def sharing_params
+        params.require(:data).require(:attributes)
+              .permit(:user_id, :permission)
+      end
 
       # Set note by ID or return not found status
       def set_note
