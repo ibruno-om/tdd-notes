@@ -7,6 +7,7 @@ module Api
       before_action :authenticate!
 
       before_action :set_note, only: %I[index create update destroy]
+      before_action :set_item, only: %I[destroy]
       # GET notes/:note_id/sharings/
       def index
         render json: @note.sharings
@@ -17,7 +18,18 @@ module Api
         render json: @note.sharings.create!(sharing_params), status: :ok
       end
 
+      # DELETE notes/:note_id/sharings/
+      def destroy
+        @sharing.destroy!
+        render json: nil, status: :accepted
+      end
+
       private
+
+      # Set sharing by ID or return not found status
+      def set_item
+        @sharing = @note.sharings.find(params[:id])
+      end
 
       # Permited params for sharing
       def sharing_params
