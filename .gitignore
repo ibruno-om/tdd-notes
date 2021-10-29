@@ -32,6 +32,7 @@
 !/storage/.keep
 .byebug_history
 esdata/
+psdata/
 
 # Ignore master key for decrypting credentials and more.
 /config/master.key

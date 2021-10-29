@@ -1,7 +1,18 @@
 version: "3.9"
+volumes:
+  redis:
+  esdata:
+  psdata:
+  gem_cache:
+  shared_data:
+
+networks:
+  development:
+    driver: bridge
+
 services:
   elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:$ELK_VERSION
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.14.1
     ports:
       - "9200:9200"
       - "9300:9300"
@@ -12,20 +23,57 @@ services:
       ELASTIC_USERNAME: $ELASTIC_USER
       ELASTIC_PASSWORD: $ELASTIC_PASSWORD
     networks:
-      - tddtodo
+      - development
     volumes:
       - ./esdata:/usr/share/elasticsearch/data
+  postgres:
+    build: 
+      context: .
+      dockerfile: docker/database/Dockerfile
+    ports:
+      - "5433:5432"
+    environment:
+      POSTGRES_USER: $NOTES_DATABASE_USER
+      POSTGRES_PASSWORD: $NOTES_DATABASE_PASSWORD
+      POSTGRES_MULTIPLE_DATABASES: notes_development,notes_test
+    volumes:
+      - ./psdata:/var/lib/postgresql/data
+    networks:
+      - development
+  api:
+    build: 
+      context: .
+      dockerfile: docker/api/Dockerfile
+    command: ['rails', 'server', '-p', '3000', '-b', '0.0.0.0']
+    env_file: .env
+    entrypoint: dev-entrypoint.sh
+    environment:
+      RAILS_ENV: development
+    volumes:
+      - .:/var/app
+      - shared_data:/var/shared
+      - gem_cache:/usr/local/bundle/gems
+    ports:
+      - "3003:3000"
+    networks:
+      - development
+    depends_on:
+      - postgres
+      - elasticsearch
+      - redis
 
   redis:
-    image: 'redis'
+    image: redis:6.2.6-alpine
     command: redis-server
     ports:
       - '6379:6379'
     volumes:
       - 'redis:/data'
+    networks:
+      - development
       
   kibana:
-    image: docker.elastic.co/kibana/kibana:$ELK_VERSION
+    image: docker.elastic.co/kibana/kibana:7.14.1
     ports:
       - "5601:5601"
     environment:
@@ -34,15 +82,6 @@ services:
       ELASTICSEARCH_USERNAME: $ELASTIC_USER
       ELASTICSEARCH_PASSWORD: $ELASTIC_PASSWORD
     networks:
-      - tddtodo
+      - development
     depends_on:
       - elasticsearch
-      
-volumes:
-  redis:
-  esdata:
-    driver: local
-
-networks:
-  tddtodo:
-    driver: bridge
