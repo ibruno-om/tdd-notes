@@ -2,7 +2,9 @@ version: "3.9"
 volumes:
   redis:
   esdata:
+    driver: local
   psdata:
+    driver: local
   gem_cache:
   shared_data:
 
