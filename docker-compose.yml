@@ -27,7 +27,7 @@ services:
     networks:
       - development
     volumes:
-      - ./esdata:/usr/share/elasticsearch/data
+      - ./esdata:/usr/share/elasticsearch/data:Z
   postgres:
     build: 
       context: .
@@ -39,7 +39,7 @@ services:
       POSTGRES_PASSWORD: $NOTES_DATABASE_PASSWORD
       POSTGRES_MULTIPLE_DATABASES: notes_development,notes_test
     volumes:
-      - ./psdata:/var/lib/postgresql/data
+      - ./psdata:/var/lib/postgresql/data:Z
     networks:
       - development
   api:
@@ -53,8 +53,8 @@ services:
       RAILS_ENV: development
     volumes:
       - .:/var/app
-      - shared_data:/var/shared
-      - gem_cache:/usr/local/bundle/gems
+      - shared_data:/var/shared:Z
+      - gem_cache:/usr/local/bundle/gems:Z
     ports:
       - "3003:3000"
     networks:

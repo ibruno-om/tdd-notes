@@ -42,3 +42,7 @@ coverage
 .env
 .env.test
 .env.development
+
+# Gem folders
+shared_data
+gem_cache
