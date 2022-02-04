@@ -15,11 +15,14 @@ Basic app for notes / TODO list API to pratice TDD in RoR.
 
 ### Requirements:  
 
-Clone down this repository. You will need `ruby` 2.7.2 installed globally on your machine, `Postgres` database server and `Docker`.
+Clone down this repository. You will need `ruby` 2.7.2 installed globally on your machine, `Postgres` database server or `Docker`.
 
-🚀 Running:
+🚀 Running with docker:
 
-    $ docker-compose up -d
+    $ docker-compose up -d 
+
+🚀 Running without docker:
+
     $ bin/bundle install
     $ bin/rails db:setup  
     $ bin/rails s -p 3000
