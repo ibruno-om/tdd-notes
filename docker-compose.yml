@@ -6,7 +6,9 @@ volumes:
   psdata:
     driver: local
   gem_cache:
+  gem_cache_sidekiq:
   shared_data:
+  shared_data_sidekiq:
 
 networks:
   development:
@@ -63,7 +65,26 @@ services:
       - postgres
       - elasticsearch
       - redis
-
+  sidekiq:
+    build: 
+      context: .
+      dockerfile: docker/api/Dockerfile
+    command: ['bundle', 'exec', 'sidekiq']
+    env_file: .env
+    entrypoint: dev-entrypoint.sh
+    environment:
+      RAILS_ENV: development
+    volumes:
+      - .:/var/app
+      - shared_data_sidekiq:/var/shared:Z
+      - gem_cache_sidekiq:/usr/local/bundle/gems:Z
+    networks:
+      - development
+    depends_on:
+      - api
+      - postgres
+      - elasticsearch
+      - redis
   redis:
     image: redis:6.2.6-alpine
     command: redis-server
